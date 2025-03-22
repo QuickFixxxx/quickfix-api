@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Evergarden Backend API Server</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      .animate-gradient {
+        background-size: 200% 200%;
+        animation: gradient 8s ease infinite;
+      }
+      .features-section {
+        background-color: rgb(31, 41, 55);
+      }
+      .feature-card {
+        background-color: rgb(17, 24, 39);
+      }
+      .feature-icon {
+        color: rgb(167, 139, 250);
+      }
+      .animate-pulse {
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-gray-900 text-white">
+      <div
+        class="fixed inset-0"
+        style="
+          background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==');
+        "
+      ></div>
+      <div>
+        <!-- Hero Section -->
+        <div class="relative overflow-hidden">
+          <!-- Animated background gradient -->
+
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-purple-900/90 to-indigo-900/90 z-10"
+          ></div>
+
+          <!-- Game images grid -->
+          <div class="absolute inset-0">
+            <div
+              class="grid grid-cols-2 md:grid-cols-4 gap-4 opacity-30"
+              id="gameGrid"
+            ></div>
+          </div>
+
+          <!-- Main content -->
+          <div class="relative z-20 max-w-7xl mx-auto px-4 py-32">
+            <div class="text-center">
+              <div class="flex justify-center mb-6">
+                <div class="relative">
+                  <div
+                    class="absolute inset-0 animate-ping bg-purple-400 rounded-full opacity-20"
+                  ></div>
+                  <i
+                    data-lucide="gamepad-2"
+                    class="w-16 h-16 text-purple-400"
+                  ></i>
+                </div>
+              </div>
+
+              <h1
+                class="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 animate-gradient"
+              >
+                GrindUp - Bornx API
+              </h1>
+              <p
+                class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto"
+              >
+                Power your gaming tournaments with our robust and scalable API
+                platform
+              </p>
+              <div
+                class="inline-flex items-center px-6 mb-6 py-3 rounded-full bg-green-500/10 text-green-400 border border-green-500/20"
+              >
+                <i
+                  data-lucide="activity"
+                  class="w-5 h-5 mr-2 animate-pulse"
+                ></i>
+                Server Status: Online
+              </div>
+              <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="/doc?pretty"
+                  class="inline-flex items-center px-8 py-4 rounded-lg bg-purple-600 hover:bg-purple-700 transition-colors"
+                >
+                  <i data-lucide="book" class="w-5 h-5 mr-2"></i>
+                  <span>OpenAPI Docs</span>
+                </a>
+                <a
+                  href="/reference"
+                  class="inline-flex items-center px-8 py-4 rounded-lg bg-indigo-600 hover:bg-indigo-700 transition-colors"
+                >
+                  <i data-lucide="code-2" class="w-5 h-5 mr-2"></i>
+                  <span>API Reference</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="py-24 relative overflow-hidden">
+          <div class="max-w-7xl mx-auto px-4 relative z-10">
+            <div class="grid md:grid-cols-3 gap-8" id="featuresGrid"></div>
+          </div>
+        </div>
+
+        <!-- Status Section -->
+        <div class="bg-gray-900 py-12">
+          <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex flex-col items-center space-y-4">
+              <div class="flex space-x-4 text-sm">
+                <span
+                  class="px-4 py-2 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20"
+                >
+                  API v1.0.0
+                </span>
+                <span
+                  class="px-4 py-2 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
+                >
+                  Last Updated: <span id="lastUpdated"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Game grid data
+      const games = [
+        {
+          name: "VALORANT",
+          image:
+            "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&q=80&w=1200",
+        },
+        {
+          name: "Esports Arena",
+          image:
+            "https://images.unsplash.com/photo-1542751110-97427bbecf20?auto=format&fit=crop&q=80&w=1200",
+        },
+        {
+          name: "Gaming Setup",
+          image:
+            "https://images.unsplash.com/photo-1603481546579-65d935ba9cdd?auto=format&fit=crop&q=80&w=1200",
+        },
+        {
+          name: "Tournament",
+          image:
+            "https://images.unsplash.com/photo-1511882150382-421056c89033?auto=format&fit=crop&q=80&w=1200",
+        },
+      ];
+
+      // Features data with Lucide icons
+      const features = [
+        {
+          icon: "terminal",
+          title: "RESTful Endpoints",
+          description:
+            "Clean and intuitive API endpoints for managing tournaments, players, and matches",
+        },
+        {
+          icon: "zap",
+          title: "Real-time Updates",
+          description:
+            "WebSocket support for live tournament updates and match statistics",
+        },
+        {
+          icon: "shield",
+          title: "Anti-Cheat Ready",
+          description:
+            "Built-in support for game integrity and anti-cheat systems",
+        },
+        {
+          icon: "code-2",
+          title: "Developer Friendly",
+          description:
+            "Comprehensive documentation and SDKs for major programming languages",
+        },
+        {
+          icon: "users",
+          title: "Team Management",
+          description: "Advanced team and roster management capabilities",
+        },
+        {
+          icon: "external-link",
+          title: "Multi-game Support",
+          description:
+            "Supports various game formats from FPS to strategy games",
+        },
+      ];
+
+      // Populate game grid
+      const gameGrid = document.getElementById("gameGrid");
+      games.forEach((game) => {
+        const div = document.createElement("div");
+        div.className = "h-64 overflow-hidden";
+        div.innerHTML = `
+                <img
+                    src="${game.image}"
+                    alt="${game.name}"
+                    class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+                />
+            `;
+        gameGrid.appendChild(div);
+      });
+
+      // Populate features grid
+      const featuresGrid = document.getElementById("featuresGrid");
+      features.forEach((feature) => {
+        const div = document.createElement("div");
+        div.className =
+          "feature-card p-6 rounded-lg border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300";
+        div.innerHTML = `
+                <i data-lucide="${feature.icon}" class="feature-icon w-12 h-12 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
+                    ${feature.title}
+                </h3>
+                <p class="text-gray-300">
+                    ${feature.description}
+                </p>
+            `;
+        featuresGrid.appendChild(div);
+      });
+
+      // Update last updated date
+      document.getElementById("lastUpdated").textContent =
+        new Date().toLocaleDateString();
+
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

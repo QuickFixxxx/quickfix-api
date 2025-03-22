@@ -1,0 +1,17 @@
+# Node/Bun dependencies  
+node_modules  
+bun.lockb  
+
+# Bun cache  
+.cache  
+.bun
+
+# Git & Editor files  
+.git  
+.gitignore  
+.vscode  
+.idea  
+
+# Environment files
+.env  
+

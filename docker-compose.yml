@@ -1,0 +1,43 @@
+services:
+  quickfix_server:
+    build: .
+    ports:
+      - "8080:8080" # Hono API server
+    environment:
+      - PORT=8080
+      - DATABASE_URL=postgres://quickfix_user:quickfix_password@db:5432/quickfixDb
+    depends_on:
+      quickfix_db:
+        condition: service_healthy
+    command: ["bun", "run", "--hot", "src/index.ts"]
+    develop:
+      watch:
+        - action: sync
+          path: ./src/
+          target: /app/src/
+        - action: sync
+          path: ./bun.lock
+          target: /app/bun.lock
+        - action: sync+restart
+          path: ./package.json
+          target: /app/package.json
+
+  quickfix_db:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_USER: quickfix_user
+      POSTGRES_PASSWORD: quickfix_password
+      POSTGRES_DB: quickfixDb
+    ports:
+      - "5433:5432" # Expose Docker PostgreSQL on port 5433
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quickfix_user -d quickfixDb"]
+      interval: 5s
+      retries: 5
+      timeout: 3s
+
+volumes:
+  pgdata:
