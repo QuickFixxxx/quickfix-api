@@ -23,8 +23,6 @@ const responseHelper = {
         success: true,
         message,
         data,
-        pagination: null,
-        error: null,
       },
       status
     );
@@ -41,8 +39,6 @@ const responseHelper = {
         status,
         success: false,
         message,
-        data: null,
-        pagination: null,
         error: error ? String(error) : null,
       },
       status
@@ -52,7 +48,6 @@ const responseHelper = {
   paginated<T>(
     c: Context,
     status: ContentfulStatusCode = 200,
-    data: T[] = [],
     pagination: object = {},
     message: string = "Success"
   ) {
@@ -61,9 +56,7 @@ const responseHelper = {
         status,
         success: true,
         message,
-        data,
         pagination,
-        error: null,
       },
       status
     );

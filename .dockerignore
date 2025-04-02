@@ -12,6 +12,3 @@ bun.lockb
 .vscode  
 .idea  
 
-# Environment files
-.env  
-

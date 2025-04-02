@@ -3,3 +3,6 @@ node_modules/
 
 # environment variables
 .env
+
+# db migrations
+src/db/migrations

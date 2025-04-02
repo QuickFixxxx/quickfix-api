@@ -1,4 +1,5 @@
 import authRoutes from "./core/routes/auth/auth.routes";
+import redisRoutes from "./core/routes/redis/redis.routes";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { apiReference } from "@scalar/hono-api-reference";
 import { prettyJSON } from "hono/pretty-json";
@@ -7,6 +8,7 @@ import serveEmojiFavicon from "./utils/serve-emoji-favicon";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 import { environmentVar } from "./config/env";
+import { allTags } from "./utils/wrappers/routeWrappers";
 
 const app = new OpenAPIHono({ strict: false });
 
@@ -20,15 +22,19 @@ app.get("/", (c) => {
 });
 
 const baseApiRoute = "/api/v1";
+
+// All Routes
 app.route(`${baseApiRoute}/auth`, authRoutes);
+app.route(`${baseApiRoute}/redis`, redisRoutes);
 
 app.doc("/doc", {
   openapi: "3.0.0",
   info: {
     version: "dev",
     title: "QuickFix API Docs",
+    description: "Yahallo, nice to meet ya",
   },
-  tags: [],
+  tags: Object.values(allTags),
   servers: [
     {
       url: `http://localhost:${environmentVar.PORT}`,
@@ -40,15 +46,13 @@ app.doc("/doc", {
 app.get(
   "/reference",
   apiReference({
-    // theme: "saturn",
     theme: "kepler",
     layout: "modern",
-    // layout: "classic",
     pageTitle: "QuickFix API Docs",
-
     spec: { url: "/doc" },
   })
 );
+
 export default {
   port: environmentVar.PORT,
   fetch: app.fetch,

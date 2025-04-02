@@ -6,7 +6,7 @@ import { environmentVar } from "./env";
 class DatabaseConnection {
   private static instance: DatabaseConnection | null = null;
   private pool!: Pool;
-  private db: ReturnType<typeof drizzle> | null = null;
+  private db: ReturnType<typeof drizzle<typeof schema>> | null = null;
 
   constructor() {
     if (DatabaseConnection.instance) {
@@ -28,6 +28,7 @@ class DatabaseConnection {
   }
 
   getConnection() {
+    console.log(environmentVar.DATABASE_URL);
     if (!this.db) {
       this.db = drizzle(this.pool, { schema });
     }

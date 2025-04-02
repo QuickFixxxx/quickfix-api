@@ -2,12 +2,18 @@ services:
   quickfix_server:
     build: .
     ports:
-      - "8080:8080" # Hono API server
+      - "8080:8080"
     environment:
       - PORT=8080
       - DATABASE_URL=postgres://quickfix_user:quickfix_password@db:5432/quickfixDb
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_USER=admin
+      - REDIS_PASSWORD=admin
     depends_on:
       quickfix_db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     command: ["bun", "run", "--hot", "src/index.ts"]
     develop:
@@ -30,7 +36,7 @@ services:
       POSTGRES_PASSWORD: quickfix_password
       POSTGRES_DB: quickfixDb
     ports:
-      - "5433:5432" # Expose Docker PostgreSQL on port 5433
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -39,5 +45,24 @@ services:
       retries: 5
       timeout: 3s
 
+  redis:
+    image: redis/redis-stack:latest
+    restart: always
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    command: ["redis-server", "--requirepass", "admin"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "admin", "ping"]
+      interval: 5s
+      retries: 5
+      timeout: 3s
+    environment:
+      - REDIS_USER=admin
+      - REDIS_PASSWORD=admin
+    volumes:
+      - redis_data:/data
+
 volumes:
   pgdata:
+  redis_data:
