@@ -58,3 +58,36 @@ export const loginOrRegisterRoute = createAuthRoute({
     },
   },
 });
+
+export const verifyOtpRoute = createAuthRoute({
+  summary: "Verify Otp",
+  description: "Verify otp and get session tokens",
+  path: "/verify-otp",
+  method: "post",
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: z.object({
+            userId: z.string(),
+            otp: z.number(),
+          }),
+          example: {
+            userId: "aef33634-ead4-4c54-bf71-841412bce05a",
+            otp: 320838,
+          },
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: "success",
+      content: {
+        "application/json": {
+          schema: z.object({}),
+        },
+      },
+    },
+  },
+});
