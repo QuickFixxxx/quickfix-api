@@ -28,7 +28,6 @@ class DatabaseConnection {
   }
 
   getConnection() {
-    console.log(environmentVar.DATABASE_URL);
     if (!this.db) {
       this.db = drizzle(this.pool, { schema });
     }

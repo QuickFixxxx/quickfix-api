@@ -1,7 +1,5 @@
 import { Context } from "hono";
 import responseHelper from "../../../utils/responsHelpers/responseHelpers";
-import { db } from "../../../config/database";
-import { users } from "../../models";
 import { createUser, findUserByPhoneNumber } from "../../../functions/user";
 import { generateOTP, generateToken } from "../../../functions/secrets";
 import redisClient from "../../../config/redis";
