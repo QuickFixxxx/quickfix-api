@@ -69,11 +69,11 @@ export const verifyOtpRoute = createAuthRoute({
       content: {
         "application/json": {
           schema: z.object({
-            userId: z.string(),
+            phoneNumber: z.string(),
             otp: z.number(),
           }),
           example: {
-            userId: "aef33634-ead4-4c54-bf71-841412bce05a",
+            phoneNumber: "9117937558",
             otp: 320838,
           },
         },

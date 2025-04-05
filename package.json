@@ -10,6 +10,7 @@
   "dependencies": {
     "@hono/zod-openapi": "^0.19.2",
     "@scalar/hono-api-reference": "^0.7.2",
+    "bullmq": "^5.46.1",
     "drizzle-orm": "0.39.0",
     "hono": "^4.7.5",
     "ioredis": "^5.6.0",

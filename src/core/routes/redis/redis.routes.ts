@@ -12,13 +12,22 @@ redisRoutes.openapi(redisTestRoute, async (c) => {
   if (!key) {
     return c.json({ message: "Key is required" }, 400);
   }
-  const value = await redisClient.get(key);
-  return c.json({ value });
+  try {
+    const value = await redisClient.get(key);
+    return c.json({ value });
+  } catch (err) {
+    console.log(err);
+    return c.json({ message: "something went wrong" });
+  }
 });
 
 redisRoutes.openapi(redisSetTestRoute, async (c) => {
   const { key, value } = await c.req.json();
-  await redisClient.set(key, value);
+  try {
+    await redisClient.set(key, value);
+  } catch (err) {
+    console.log("redis err", err);
+  }
   return c.json({ message: "Data saved to Redis" });
 });
 

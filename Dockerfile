@@ -11,10 +11,6 @@ RUN bun install --frozen-lockfile
 # Copy the entire project
 COPY . .
 
-# Set environment variables
-ENV PORT=8080
-ENV DATABASE_URL=postgresql://quickfix_user:quickfix_password@db:5432/quickfixDb
-
 # Expose the port your app runs on
 EXPOSE 8080
 

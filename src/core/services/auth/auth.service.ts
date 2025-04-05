@@ -3,6 +3,7 @@ import responseHelper from "../../../utils/responsHelpers/responseHelpers";
 import { createUser, findUserByPhoneNumber } from "../../../functions/user";
 import { generateOTP, generateToken } from "../../../functions/secrets";
 import redisClient from "../../../config/redis";
+import { otpQueue } from "../../../config/queue";
 
 export const authServices = {
   async loginorRegisterUserService(c: Context) {
@@ -18,7 +19,10 @@ export const authServices = {
         // generate otp and store it in redis
         const otp = await generateOTP();
         // const secrets = await generateToken(newUser.id);
-        redisClient.set(newUser.id, otp, "EX", 60 * 10);
+        redisClient.set(phoneNumber, otp, "EX", 60 * 10);
+
+        // await otpQueue.add("sendOtp", { phoneNumber, otp });
+
         // c.json({ message: "success" });
         return responseHelper.success(
           c,
@@ -28,7 +32,8 @@ export const authServices = {
         );
       }
       const otp = await generateOTP();
-      await redisClient.set(user.id, otp, "EX", 60 * 10);
+      await redisClient.set(phoneNumber, otp, "EX", 60 * 10);
+      // await otpQueue.add("sendOtp", { phoneNumber, otp });
       return responseHelper.success(c, 200, { user, otp });
     } catch (err) {
       console.error(err);
@@ -38,16 +43,17 @@ export const authServices = {
     }
   },
   async verifyOtpService(c: Context) {
-    const { userId, otp } = await c.req.json();
+    const { phoneNumber, otp } = await c.req.json();
     try {
-      const redisOtp = await redisClient.get(userId);
+      const redisOtp = await redisClient.get(phoneNumber);
       if (otp == redisOtp) {
-        const secrets = await generateToken(userId);
-        await redisClient.del(userId);
+        const secrets = await generateToken(phoneNumber);
+        await redisClient.del(phoneNumber);
+        const user = await findUserByPhoneNumber(phoneNumber);
         return responseHelper.success(
           c,
           200,
-          { userId, secrets },
+          { user, secrets },
           "login success"
         );
       }

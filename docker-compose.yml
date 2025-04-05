@@ -1,15 +1,17 @@
 services:
-  quickfix_server:
+  server:
     build: .
     ports:
       - "8080:8080"
     environment:
       - PORT=8080
-      - DATABASE_URL=postgres://quickfix_user:quickfix_password@db:5432/quickfixDb
+      - DATABASE_URL=postgres://quickfix_user:quickfix_password@quickfix_db:5432/quickfixDb
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - REDIS_USER=admin
       - REDIS_PASSWORD=admin
+      - JWT_ACCESS_SECRET=yahallo
+      - JWT_REFRESH_SECRET=yahallo
+
     depends_on:
       quickfix_db:
         condition: service_healthy
@@ -39,6 +41,7 @@ services:
       - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U quickfix_user -d quickfixDb"]
       interval: 5s
@@ -53,13 +56,10 @@ services:
       - "8001:8001"
     command: ["redis-server", "--requirepass", "admin"]
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "admin", "ping"]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       retries: 5
       timeout: 3s
-    environment:
-      - REDIS_USER=admin
-      - REDIS_PASSWORD=admin
     volumes:
       - redis_data:/data
 
