@@ -20,7 +20,6 @@ const homePage = readFileSync(resolve(__dirname, "Home.html"), "utf8");
 app.get("/", (c) => {
   return c.html(homePage, 200);
 });
-
 const baseApiRoute = "/api/v1";
 
 // All Routes

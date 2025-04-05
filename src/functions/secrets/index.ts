@@ -8,30 +8,35 @@ export async function generateOTP() {
   const otp = Math.floor(100000 + Math.random() * 900000);
   return otp;
 }
-export async function generateToken(userId: string) {
+export async function generateToken(phoneNumber: string, userId: string) {
+  const nowInSeconds = Math.floor(Date.now() / 1000);
+  const expiry = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7; // 7 days expiration
   const accessPayload = {
-    sub: userId,
+    // sub: userId,
+    userId,
+    phoneNumber,
     type: "access",
-    exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hours expiration
+    iat: nowInSeconds,
+    exp: expiry,
   };
 
-  const refreshPayload = {
-    sub: userId,
-    type: "refresh",
-    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // 7 days expiration
-  };
+  // const refreshPayload = {
+  //   sub: userId,
+  //   type: "refresh",
+  //   exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365, // 365 days expiration
+  // };
 
   const accessToken = await sign(
     accessPayload,
     environmentVar.JWT_ACCESS_SECRET
   );
 
-  const refreshToken = await sign(
-    refreshPayload,
-    environmentVar.JWT_REFRESH_SECRET
-  );
+  // const refreshToken = await sign(
+  //   refreshPayload,
+  //   environmentVar.JWT_REFRESH_SECRET
+  // );
   return {
     accessToken,
-    refreshToken,
+    // refreshToken,
   };
 }

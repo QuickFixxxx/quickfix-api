@@ -45,19 +45,26 @@ export const authServices = {
   async verifyOtpService(c: Context) {
     const { phoneNumber, otp } = await c.req.json();
     try {
-      const redisOtp = await redisClient.get(phoneNumber);
-      if (otp == redisOtp) {
-        const secrets = await generateToken(phoneNumber);
-        await redisClient.del(phoneNumber);
-        const user = await findUserByPhoneNumber(phoneNumber);
-        return responseHelper.success(
-          c,
-          200,
-          { user, secrets },
-          "login success"
-        );
+      const user = await findUserByPhoneNumber(phoneNumber);
+      if (user) {
+        const redisOtp = await redisClient.get(phoneNumber);
+        if (otp == redisOtp) {
+          const secrets = await generateToken(phoneNumber, user.id);
+          const { accessToken } = secrets;
+          await redisClient.set(user.id, accessToken);
+          await redisClient.del(phoneNumber);
+          return responseHelper.success(
+            c,
+            200,
+            { user, accessToken },
+            "login success"
+          );
+        } else {
+          return responseHelper.error(c, 401, "invalid otp");
+        }
+      } else {
+        return responseHelper.error(c, 404, "user not found");
       }
-      return responseHelper.error(c, 402, "invalid otp");
     } catch (err) {
       console.error("err", err);
       const message =
