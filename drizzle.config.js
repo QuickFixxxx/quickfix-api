@@ -7,6 +7,6 @@ export default defineConfig({
   dialect: "postgresql",
   dbCredentials: {
     url: environmentVar.DATABASE_URL,
-    // url: "postgres://quickfix_user:quickfix_password@localhost:5432/quickfixDb", // docker
+    // url: "postgres://quickfix_user:quickfix_password@quickfixDb:5432/quickfixDb", // docker
   },
 });

@@ -14,7 +14,6 @@
 //   };
 // };
 
-
 // // Create a new router instance with extended context
 // const protectedRoutes = new OpenAPIHono<AppContext>();
 
@@ -23,7 +22,7 @@
 
 // // Protected route
 // protectedRoutes.openapi(
-    
+
 //   {
 //     method: "get",
 //     path: "/protected/user-info",
@@ -56,7 +55,6 @@
 // );
 
 // export default protectedRoutes;
-  
 
 import { z } from "@hono/zod-openapi";
 import { authMiddleware } from "../../../middlewares/authMiddleware";
@@ -85,6 +83,7 @@ export const registerProtectedRoutes = (app: OpenAPIHono<AppContext>) => {
       summary: "Get user info",
       description: "Returns user info from verified token",
       tags: ["Protected"],
+
       responses: {
         200: {
           description: "User info",

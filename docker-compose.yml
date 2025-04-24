@@ -17,7 +17,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    command: ["bun", "run", "--hot", "src/index.ts"]
+    command:
+      ["sh", "-c", "bun migrate && bun push && bun run --hot src/index.ts"]
     develop:
       watch:
         - action: sync
